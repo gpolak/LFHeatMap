@@ -12,6 +12,21 @@ iOS heat map package
 ## Anti-Features
 LFHeatMap is a simple `UIImage` generator. The resulting object can be used like any other `UIImage`, standalone or in a `UIImageView`. While it can be overlaid on top of a `MKMapView`, it is not strongly tied to this specific component and hence does not offer the benefits that come with a more complex implementation of `MKOverlayRenderer`.
 
+## Adding LFHeatMap to your project
+
+### CocoaPods
+
+[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like FGTranslator in your projects. See the ["Getting Started"](https://github.com/gpolak/LFHeatMap/wiki/Installing-LFHeatMap-via-CocoaPods) guide for more information.
+
+```ruby
+platform :ios, '5.0'
+pod "FGTranslator", "~> 1.0"
+```
+
+### Source files
+
+Alternatively you can directly add the `LFHeatMap` folder to your project.
+
 ## Demo
 This demo plots the measured magnitudes of the [2011 Virginia Earthquake](http://en.wikipedia.org/wiki/2011_Virginia_earthquake).
 
@@ -34,7 +49,7 @@ This class contains the three basic static functions used to generate the heat m
 
 Supply the desired image dimensions and boost, as well as the point/value arrays. There should be a 1:1 mapping between these two arrays, that is each index in the *points* array should have a corresponding index in the *weights* array.
 
-```
+```objective-c
 @params
 rect: region frame
 boost: heat boost value
@@ -51,7 +66,7 @@ UIImage object representing the heatmap for the specified region.
 
 Works generally the same as the basic heat map, but allows to tweak two additional parameters to control the "bleed" of heat rendering.
 
-```
+```objective-c
 @params
 rect: region frame
 boost: heat boost value
@@ -72,7 +87,7 @@ Works the same as the basic heat map, but allows you to supply map-specific para
 
 The function will convert these to the required CGRect/CGPoint values as needed.
 
-```
+```objective-c
 @params 
 mapView: Map view representing the heat map area.
 boost: heat boost value
