@@ -16,11 +16,11 @@ LFHeatMap is a simple `UIImage` generator. The resulting object can be used like
 
 ### CocoaPods
 
-[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like FGTranslator in your projects. See the ["Getting Started"](https://github.com/gpolak/LFHeatMap/wiki/Installing-LFHeatMap-via-CocoaPods) guide for more information.
+[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like LFHeatMap in your projects. See the ["Getting Started"](https://github.com/gpolak/LFHeatMap/wiki/Installing-LFHeatMap-via-CocoaPods) guide for more information.
 
 ```ruby
 platform :ios, '5.0'
-pod "FGTranslator", "~> 1.0"
+pod "LFHeatMap", "~> 1.0"
 ```
 
 ### Source files
