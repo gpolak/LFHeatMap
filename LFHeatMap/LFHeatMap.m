@@ -211,8 +211,8 @@ inline static int isqrt(int x)
     int *point_x = malloc(sizeof(int) * points_num);
     int *point_y = malloc(sizeof(int) * points_num);
     int *point_weight_percent = malloc(sizeof(int) * points_num);
-    float *point_weight;
-    float max_weight;
+    float *point_weight = 0;
+    float max_weight = 0;
     if (weights != nil)
     {
         point_weight = malloc(sizeof(float) * points_num);
