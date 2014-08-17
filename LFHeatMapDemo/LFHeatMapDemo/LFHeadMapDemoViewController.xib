@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
+        <deployment defaultVersion="1280" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
@@ -16,11 +17,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wh6-BW-57T">
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" id="Wh6-BW-57T">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </mapView>
-                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ftb-2N-oBH">
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="ftb-2N-oBH">
                     <rect key="frame" x="18" y="518" width="284" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <connections>
@@ -29,15 +30,6 @@
                 </slider>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="Wh6-BW-57T" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="3MM-UE-h7G"/>
-                <constraint firstAttribute="bottom" secondItem="Wh6-BW-57T" secondAttribute="bottom" id="Hcl-gr-CSZ"/>
-                <constraint firstItem="ftb-2N-oBH" firstAttribute="centerX" secondItem="Wh6-BW-57T" secondAttribute="centerX" id="J9w-6T-YPq"/>
-                <constraint firstAttribute="trailing" secondItem="ftb-2N-oBH" secondAttribute="trailing" constant="20" symbolic="YES" id="XIo-84-Pia"/>
-                <constraint firstAttribute="bottom" secondItem="ftb-2N-oBH" secondAttribute="bottom" constant="20" symbolic="YES" id="eVC-Da-Mor"/>
-                <constraint firstItem="ftb-2N-oBH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" symbolic="YES" id="msF-Wx-qzo"/>
-                <constraint firstItem="Wh6-BW-57T" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="sgz-3d-SC7"/>
-            </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
