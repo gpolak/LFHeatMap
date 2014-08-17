@@ -20,7 +20,7 @@ LFHeatMap is a simple `UIImage` generator. The resulting object can be used like
 
 ```ruby
 platform :ios, '5.0'
-pod "LFHeatMap", "~> 1.0"
+pod "LFHeatMap"
 ```
 
 ### Source files
