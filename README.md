@@ -59,7 +59,10 @@ weights: array of NSNumber integer objects representing the weight of each point
 @returns
 UIImage object representing the heatmap for the specified region.
  
-+ (UIImage *)heatMapWithRect:boost:points:weights:
++ (UIImage *)heatMapWithRect:(CGRect)rect 
+                       boost:(float)boost 
+                      points:(NSArray *)points 
+                     weights:(NSArray *)weights
 ```
 
 ### 2. Advanced Heat Map
@@ -78,7 +81,12 @@ groupingEnabled: set YES for tighter visual grouping of dense areas
 @returns
 UIImage object representing the heat map for the specified region.
  
-+ (UIImage *)heatMapWithRect:boost:points:weights:weightsAdjustmentEnabled:groupingEnabled:
++ (UIImage *)heatMapWithRect:(CGRect)rect 
+                       boost:(float)boost 
+                      points:(NSArray *)points 
+                     weights:(NSArray *)weights 
+    weightsAdjustmentEnabled:(BOOL)weightsAdjustmentEnabled
+             groupingEnabled:(BOOL)groupingEnabled
 ```
 
 ### 3. MKMapView Helper
@@ -97,7 +105,11 @@ weights: array of NSNumber integer objects representing the weight of each point
 @returns
 UIImage object representing the heatmap for the map region.
 
-+ (UIImage *)heatMapForMapView:boost:locations:weights:
++ (UIImage *)heatMapForMapView:(MKMapView *)mapView
+                         boost:(float)boost
+                     locations:(NSArray *)locations
+                       weights:(NSArray *)weights
+
 ```
 
 ## LF?

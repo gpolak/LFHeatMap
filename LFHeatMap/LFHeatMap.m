@@ -171,7 +171,8 @@ inline static int isqrt(int x)
                       points:(NSArray *)points
                      weights:(NSArray *)weights
     weightsAdjustmentEnabled:(BOOL)weightsAdjustmentEnabled
-             groupingEnabled:(BOOL)groupingEnabled {
+             groupingEnabled:(BOOL)groupingEnabled
+{
 	
     // Adjustment variables for weights adjustment
     float weightSensitivity = 1; // Percents from maximum weight
