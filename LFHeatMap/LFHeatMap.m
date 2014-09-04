@@ -153,23 +153,23 @@ inline static int isqrt(int x)
     return [LFHeatMap heatMapWithRect:mapView.frame boost:boost points:points weights:weights];
 }
 
-+ (UIImage *)heatMapWithRect:(CGRect)rect 
-                       boost:(float)boost 
-                      points:(NSArray *)points 
++ (UIImage *)heatMapWithRect:(CGRect)rect
+                       boost:(float)boost
+                      points:(NSArray *)points
                      weights:(NSArray *)weights
 {
     return [LFHeatMap heatMapWithRect:rect
-                              boost:boost
-                             points:points
-                            weights:weights
-           weightsAdjustmentEnabled:NO
-                    groupingEnabled:YES];
+                                boost:boost
+                               points:points
+                              weights:weights
+             weightsAdjustmentEnabled:NO
+                      groupingEnabled:YES];
 }
 
-+ (UIImage *)heatMapWithRect:(CGRect)rect 
-                       boost:(float)boost 
-                      points:(NSArray *)points 
-                     weights:(NSArray *)weights 
++ (UIImage *)heatMapWithRect:(CGRect)rect
+                       boost:(float)boost
+                      points:(NSArray *)points
+                     weights:(NSArray *)weights
     weightsAdjustmentEnabled:(BOOL)weightsAdjustmentEnabled
              groupingEnabled:(BOOL)groupingEnabled {
 	
@@ -186,7 +186,7 @@ inline static int isqrt(int x)
     if (points == nil ||
         rect.size.width <= 0 ||
         rect.size.height <= 0 ||
-        (weights != nil && 
+        (weights != nil &&
 		 [points count] != [weights count]))
     {
         NSLog(@"LFHeatMap: heatMapWithRect: incorrect arguments");
@@ -201,13 +201,14 @@ inline static int isqrt(int x)
     // According to heatmap API, boost is heat radius multiplier
     int radius = 50 * boost;
     
-    unsigned char* rgba = (unsigned char*)malloc(width*height*4);
-    int* density = (int*)malloc(sizeof(int) * width*height);
+    // RGBA array is initialized with 0s
+    unsigned char* rgba = (unsigned char*)calloc(width*height*4, sizeof(unsigned char));
+    int* density = (int*)calloc(width*height, sizeof(int));
     memset(density, 0, sizeof(int) * width*height);
     
     // Step 1
     // Copy points into plain array (plain array iteration is faster than accessing NSArray objects)
-    int points_num = [points count];
+    int points_num = (int)[points count];
     int *point_x = malloc(sizeof(int) * points_num);
     int *point_y = malloc(sizeof(int) * points_num);
     int *point_weight_percent = malloc(sizeof(int) * points_num);
@@ -227,11 +228,11 @@ inline static int isqrt(int x)
         point_y[i] = [pointValue CGPointValue].y - rect.origin.y;
         
         // Filter out of range points
-        if (point_x[i] < 0 - radius || 
+        if (point_x[i] < 0 - radius ||
             point_y[i] < 0 - radius ||
             point_x[i] >= rect.size.width + radius ||
             point_y[i] >= rect.size.height + radius)
-        {                    
+        {
             points_num--;
             j++;
             // Do not increment i, to replace this point in next iteration (or drop if it is last one)
@@ -255,7 +256,7 @@ inline static int isqrt(int x)
     
     // Step 1.5
     // Normalize weights to be 0 .. 100 (like percents)
-    // Weights array should be integer for not slowing down calculation by 
+    // Weights array should be integer for not slowing down calculation by
     // int-float conversion and float multiplication
     if (weights != nil)
     {
@@ -267,64 +268,65 @@ inline static int isqrt(int x)
             {
                 if (point_weight[i] <= absWeightSensitivity)
                     point_weight[i] *= absWeightBoostTo / absWeightSensitivity;
-                else 
+                else
                     point_weight[i] = absWeightBoostTo + ( point_weight[i] - absWeightSensitivity ) * ((max_weight - absWeightBoostTo) / (max_weight - absWeightSensitivity));
             }
             point_weight_percent[i] = 100.0 * (point_weight[i] / max_weight);
         }
         free(point_weight);
-    } else 
+    } else
     {
         // Fill with 1 in case if no weights provided
         for (i = 0; i < points_num; i++)
         {
             point_weight_percent[i] = 1;
         }
-    }    
+    }
     
     // Step 1.75 (optional)
     // Grouping and filtering bunches of points in same location
     int currentDistance;
     int currentDensity;
+        
     if (groupingEnabled)
     {
         for (i = 0; i < points_num; i++)
         {
-            for (j = i + 1; j < points_num; j++)
+            if (point_weight_percent[i]> 0)
             {
-                currentDistance = isqrt((point_x[i] - point_x[j])*(point_x[i] - point_x[j]) + (point_y[i] - point_y[j])*(point_y[i] - point_y[j]));
-                
-                if (currentDistance > peaksRemovalThreshold)
-                    currentDistance = peaksRemovalThreshold;
-                
-                float K1 = 1 - peaksRemovalFactor;
-                float K2 = peaksRemovalFactor;
-                
-                // Lowering peaks
-                point_weight_percent[i] = 
-                K1 * point_weight_percent[i] +
-                K2 * point_weight_percent[i] * (float) ((float)(currentDistance) / (float)peaksRemovalThreshold);
-                
-                // Performing grouping if two points are closer than groupingThreshold
-                if (currentDistance <= groupingThreshold)
+                for (j = i + 1; j < points_num; j++)
                 {
-                    // Merge i and j points. Store result in [i], remove [j]
-                    point_x[i] = (point_x[i] + point_x[j]) / 2;
-                    point_y[i] = (point_y[i] + point_y[j]) / 2;
-                    point_weight_percent[i] = point_weight_percent[i] + point_weight_percent[j];
-                    
-                    // Remove [j] from array
-                    for (int mj = j; mj + 1 < points_num; mj++)
+                    if (point_weight_percent[j]> 0)
                     {
-                        point_x[mj] = point_x[mj + 1];
-                        point_y[mj] = point_y[mj + 1];
-                        point_weight_percent[mj] = point_weight_percent[mj + 1];
+                        currentDistance = isqrt((point_x[i] - point_x[j])*(point_x[i] - point_x[j]) + (point_y[i] - point_y[j])*(point_y[i] - point_y[j]));
+                        
+                        if (currentDistance > peaksRemovalThreshold)
+                            currentDistance = peaksRemovalThreshold;
+                        
+                        float K1 = 1 - peaksRemovalFactor;
+                        float K2 = peaksRemovalFactor;
+                        
+                        // Lowering peaks
+                        point_weight_percent[i] =
+                        K1 * point_weight_percent[i] +
+                        K2 * point_weight_percent[i] * (float) ((float)(currentDistance) / (float)peaksRemovalThreshold);
+                        
+                        // Performing grouping if two points are closer than groupingThreshold
+                        if (currentDistance <= groupingThreshold)
+                        {
+                            // Merge i and j points. Store result in [i], remove [j]
+                            point_x[i] = (point_x[i] + point_x[j]) / 2;
+                            point_y[i] = (point_y[i] + point_y[j]) / 2;
+                            point_weight_percent[i] = point_weight_percent[i] + point_weight_percent[j];
+                            
+                            // point_weight_percent[j] is set negative to be avoided
+                            point_weight_percent[j] = -10;
+                            
+                            // Repeat again for new point
+                            i--;
+                            break;
+                        }
                     }
-                    points_num--;
-                    
-                    // Repeat again for new point
-                    i--;
-                    break;
                 }
             }
         }
@@ -335,35 +337,39 @@ inline static int isqrt(int x)
     int from_x, from_y, to_x, to_y;
     for (i = 0; i < points_num; i++)
     {
-        from_x = point_x[i] - radius;
-        from_y = point_y[i] - radius;
-        to_x = point_x[i] + radius;
-        to_y = point_y[i] + radius;
-        
-        if (from_x < 0)
-            from_x = 0;
-        if (from_y < 0)
-            from_y = 0;
-        if (to_x > width)
-            to_x = width;
-        if (to_y > height)
-            to_y = height;
-        
-        
-        for (int y = from_y; y < to_y; y++)
+        if (point_weight_percent[i]> 0)
         {
-            for (int x = from_x; x < to_x; x++)
+            from_x = point_x[i] - radius;
+            from_y = point_y[i] - radius;
+            to_x = point_x[i] + radius;
+            to_y = point_y[i] + radius;
+            
+            if (from_x < 0)
+                from_x = 0;
+            if (from_y < 0)
+                from_y = 0;
+            if (to_x > width)
+                to_x = width;
+            if (to_y > height)
+                to_y = height;
+            
+            
+            for (int y = from_y; y < to_y; y++)
             {
-                currentDistance = (x - point_x[i])*(x - point_x[i]) + (y - point_y[i])*(y - point_y[i]);
-                
-                currentDensity = radius - isqrt(currentDistance);
-                if (currentDensity < 0)
-                    currentDensity = 0;
-                
-                density[y*width + x] += currentDensity * point_weight_percent[i];
+                for (int x = from_x; x < to_x; x++)
+                {
+                    currentDistance = (x - point_x[i])*(x - point_x[i]) + (y - point_y[i])*(y - point_y[i]);
+                    
+                    currentDensity = radius - isqrt(currentDistance);
+                    if (currentDensity < 0)
+                        currentDensity = 0;
+                    
+                    density[y*width + x] += currentDensity * point_weight_percent[i];
+                }
             }
         }
     }
+    
     
     free(point_x);
     free(point_y);
@@ -383,39 +389,32 @@ inline static int isqrt(int x)
     // Render density info into raw RGBA pixels
     i = 0;
     float floatDensity;
-    unsigned char d_r, d_g, d_b, d_a;
+    uint indexOrigin;
     for (int y = 0; y < height; y++)
     {
         for (int x = 0; x < width; x++, i++)
         {
-            // Normalize density to 0..1
-            floatDensity = (float)density[i] / (float)maxDensity;
-            
-            // Red component
-            d_r = floatDensity * 255;
-            
-            // Green component
-            if (floatDensity < 0.5)
-                d_g = 0;
-            else if (floatDensity < 0.75)
-                d_g = (floatDensity - 0.5) * 255 * 3;
-            else 
-                d_g = d_r;
-            
-            // Blue component
-            if (floatDensity < 0.8)
-                d_b = 0;
-            else
-                d_b = (floatDensity - 0.8) * 255 * 5;
-            
-            // Alpha component equals to red
-            d_a = d_r;
-            
-            rgba[4*i] = d_r;
-            rgba[4*i+1] = d_g;
-            rgba[4*i+2] = d_b;
-            rgba[4*i+3] = d_a;
-            
+            if (density[i] > 0)
+            {
+                indexOrigin = 4*i;
+                // Normalize density to 0..1
+                floatDensity = (float)density[i] / (float)maxDensity;
+                
+                // Red and alpha component
+                rgba[indexOrigin] = floatDensity * 255;
+                rgba[indexOrigin+3] = rgba[indexOrigin];
+                
+                 // Green component
+                if (floatDensity >= 0.75)
+                    rgba[indexOrigin+1] = rgba[indexOrigin];
+                else if (floatDensity >= 0.5)
+                    rgba[indexOrigin+1] = (floatDensity - 0.5) * 255 * 3;
+               
+                
+                // Blue component
+                if (floatDensity >= 0.8)
+                    rgba[indexOrigin+2] = (floatDensity - 0.8) * 255 * 5;
+            }
         }
     }
     
