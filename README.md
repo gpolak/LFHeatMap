@@ -36,7 +36,7 @@ This demo plots the measured magnitudes of the [2011 Virginia Earthquake](http:/
 
 ### Explanation
 
-The data is stored in `quake.plist` which is a simple plist storing the latitude, longitude, and magnitude of each measurement. The points (locations) and weights (magnitudes) are stored in two `NSArray` objects in `viewDidLoad` of `LFHeadMapDemoViewController`.
+The data is stored in `quake.plist` which is a simple plist storing the latitude, longitude, and magnitude of each measurement. The points (locations) and weights (magnitudes) are stored in two `NSArray` objects in `viewDidLoad` of `LFHeatMapDemoViewController`.
 
 The main action takes place in the `sliderChanged:` function. Moving the slider determines the new boost value and generates a new heat map image. The image's dimensions are the same as the `self.mapView` object, with the points and weights supplied by the two data arrays. The image is then passed to the overlaying `UIImageView` that sits on top of the map.
 
