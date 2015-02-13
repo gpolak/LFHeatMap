@@ -1,4 +1,4 @@
-# LFHeatMap
+# LFHeatMap [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 iOS heat map package
 
