@@ -1,4 +1,4 @@
-# LFHeatMap [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
+# LFHeatMap
 
 iOS heat map package
 
@@ -111,6 +111,11 @@ UIImage object representing the heatmap for the map region.
                        weights:(NSArray *)weights
 
 ```
+
+## License
+
+LFHeatMap is available under the MIT license. See the LICENSE file for more info.
+
 
 ## LF?
 
