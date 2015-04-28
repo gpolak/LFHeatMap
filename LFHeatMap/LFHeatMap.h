@@ -1,3 +1,10 @@
+/*
+ * LFHeatMap
+ * Copyright: (2015) George Polak
+ * https://github.com/gpolak/LFHeatMap
+ * License: MIT
+ */
+
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
