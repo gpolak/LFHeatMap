@@ -1,4 +1,4 @@
-# LFHeatMap
+# LFHeatMap for Mapbox
 
 iOS heat map package
 
