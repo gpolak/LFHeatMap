@@ -4,33 +4,6 @@ iOS heat map package
 
 ![LFHeatMap](lfheatmap_screenshot.png)
 
-## Features
-* extremely fast heat map generation from point/weight data pairs
-* generates UIImage objects that can be overlaid as needed
-* variable boost/bleed
-
-## Anti-Features
-Size of the heatmap is limited to avoid memory overflow.
-
-## Adding LFHeatMap to Your Project
-
-### Source Files
-
-Copy the `LFHeatMap` folder to your project.
-
-## Demo
-This demo plots the measured magnitudes of the [2011 Virginia Earthquake](http://en.wikipedia.org/wiki/2011_Virginia_earthquake).
-
-### Running
-1. Open and launch the LFHeatMapDemo XCode project. 
-2. Move the slider on the bottom to adjust the boost.
-
-### Explanation
-
-The data is stored in `quake.plist` which is a simple plist storing the latitude, longitude, and magnitude of each measurement. The points (locations) and weights (magnitudes) are stored in two `NSArray` objects in `viewDidLoad` of `LFHeatMapDemoViewController`.
-
-With the above data, `LFHeatMap` generates an `RMAnnotation` instance that you can add to your Mapbox map directly.
-
 ##Usage
 
 **1. Add annotation to the map**
@@ -66,6 +39,33 @@ else
     return nil;
 }
 ```
+
+## Features
+* extremely fast heat map generation from point/weight data pairs
+* generates UIImage objects that can be overlaid as needed
+* variable boost/bleed
+
+## Anti-Features
+Size of the heatmap is limited to avoid memory overflow.
+
+## Adding LFHeatMap to Your Project
+
+### Source Files
+
+Copy the `LFHeatMap` folder to your project.
+
+## Demo
+This demo plots the measured magnitudes of the [2011 Virginia Earthquake](http://en.wikipedia.org/wiki/2011_Virginia_earthquake).
+
+### Running
+1. Open and launch the LFHeatMapDemo XCode project. 
+2. Move the slider on the bottom to adjust the boost.
+
+### Explanation
+
+The data is stored in `quake.plist` which is a simple plist storing the latitude, longitude, and magnitude of each measurement. The points (locations) and weights (magnitudes) are stored in two `NSArray` objects in `viewDidLoad` of `LFHeatMapDemoViewController`.
+
+With the above data, `LFHeatMap` generates an `RMAnnotation` instance that you can add to your Mapbox map directly.
 
 ## License
 
