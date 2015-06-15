@@ -1,0 +1,7 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/FMDB" "${PODS_ROOT}/Headers/Public/GRMustache" "${PODS_ROOT}/Headers/Public/JRSwizzle" "${PODS_ROOT}/Headers/Public/Mapbox-iOS-SDK" "${PODS_ROOT}/Headers/Public/SMCalloutView"
+LIBRARY_SEARCH_PATHS = "${PODS_ROOT}/Mapbox-iOS-SDK/Proj4" "$(PODS_ROOT)/Mapbox-iOS-SDK/Proj4"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/FMDB" -isystem "${PODS_ROOT}/Headers/Public/GRMustache" -isystem "${PODS_ROOT}/Headers/Public/JRSwizzle" -isystem "${PODS_ROOT}/Headers/Public/Mapbox-iOS-SDK" -isystem "${PODS_ROOT}/Headers/Public/SMCalloutView"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"Pods-FMDB" -l"Pods-GRMustache" -l"Pods-JRSwizzle" -l"Pods-Mapbox-iOS-SDK" -l"Pods-SMCalloutView" -l"Proj4" -l"sqlite3" -l"z" -framework "CoreGraphics" -framework "CoreLocation" -framework "Foundation" -framework "QuartzCore" -framework "UIKit"
+OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
+PODS_ROOT = ${SRCROOT}/Pods

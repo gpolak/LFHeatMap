@@ -6,75 +6,46 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <MapKit/MapKit.h>
+#import <Mapbox-iOS-SDK/Mapbox.h>
+
+extern inline CGRect CGRectContainingPoints(NSArray *points);
+extern inline CGPoint CGPointOffset(CGPoint point, CGFloat xOffset, CGFloat yOffset);
+
+@interface RMHeatmapAnnotation : RMAnnotation
+
+@property (nonatomic, strong) UIImage *heatmapImage;
+
+@end
+
+@interface RMHeatmapMarker : RMMarker
+
+- (instancetype)initWithHeatmapAnnotation:(RMHeatmapAnnotation *)heatmapAnnotation;
+
+@end
 
 @interface LFHeatMap : NSObject
-{    
+{
 }
 
 /**
- Generates a heat map image for the specified map view.
+ Generates a heat map annotation for the specified map view.
  
  There should be a one-to-one correspondence between the location and weight elements.
  A nil weight parameter implies an even weight distribution.
  
- @params 
- mapView: Map view representing the heat map area.
- boost: heat boost value
- locations: array of CLLocation objects representing the data points
- weights: array of NSNumber integer objects representing the weight of each point
+ @param mapView Map view representing the heat map area.
+ @param boost heat boost value
+ @param locations array of CLLocation objects representing the data points
+ @param weights array of NSNumber integer objects representing the weight of each point
  
- @returns
- UIImage object representing the heatmap for the map region.
+ @warning If the heatmap image generated is too big, this method will return nil
+ 
+ @return RMHeatmapAnnotation object representing the heatmap ready to be added to the map
  */
-+ (UIImage *)heatMapForMapView:(MKMapView *)mapView
-                         boost:(float)boost
-                     locations:(NSArray *)locations
-                       weights:(NSArray *)weights;
-
-/**
- Generates a heat map image for the specified rectangle.
- 
- There should be a one-to-one correspondence between the location and weight elements.
- A nil weight parameter implies an even weight distribution.
- 
- @params
- @rect: region frame
- boost: heat boost value
- points: array of NSValue CGPoint objects representing the data points
- weights: array of NSNumber integer objects representing the weight of each point
- 
- @returns
- UIImage object representing the heatmap for the specified region.
- */
-+ (UIImage *)heatMapWithRect:(CGRect)rect 
-                       boost:(float)boost 
-                      points:(NSArray *)points 
-                     weights:(NSArray *)weights;
-
-/**
- Generates a heat map image for the specified rectangle.
- 
- There should be a one-to-one correspondence between the location and weight elements.
- A nil weight parameter implies an even weight distribution.
- 
- @params
- @rect: region frame
- boost: heat boost value
- points: array of NSValue CGPoint objects representing the data points
- weights: array of NSNumber integer objects representing the weight of each point
- weightsAdjustmentEnabled: set YES for weight balancing and normalization
- groupingEnabled: set YES for tighter visual grouping of dense areas
- 
- @returns
- UIImage object representing the heatmap for the specified region.
- */
-+ (UIImage *)heatMapWithRect:(CGRect)rect 
-                       boost:(float)boost 
-                      points:(NSArray *)points 
-                     weights:(NSArray *)weights 
-    weightsAdjustmentEnabled:(BOOL)weightsAdjustmentEnabled
-             groupingEnabled:(BOOL)groupingEnabled;
++ (RMHeatmapAnnotation *)heatMapAnnotationForMapView:(RMMapView *)mapView
+                                               boost:(float)boost
+                                           locations:(NSArray *)locations
+                                             weights:(NSArray *)weights;
 
 
 @end
