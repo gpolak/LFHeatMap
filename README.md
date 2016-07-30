@@ -15,7 +15,7 @@
 ### NUGET
 
 ```console
-Install-Package LFHeatMap -Pre"
+Install-Package LFHeatMap
 ```
 
 ### Source Files
