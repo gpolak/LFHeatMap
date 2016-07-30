@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using CoreGraphics;
 using CoreLocation;
 using Foundation;
@@ -26,31 +24,7 @@ namespace heatmap
 			LoadQuakeData(out _locations, out _weights);
 			LoadMapUI();
 
-			//var points = new List<PointF>();
-			//var nnumbers = new List<double>();
-
-			//points.Add(new PointF((float)View.Bounds.Width / 2, 100));
-			////points.Add(new PointF((float)View.Bounds.Width / 2, 100));
-			//points.Add(new PointF((float)View.Bounds.Width / 2, 100));
-			//points.Add(new PointF((float)View.Bounds.Width / 2, 100));
-			//nnumbers.Add(1);
-			//nnumbers.Add(1);
-			//nnumbers.Add(1);
-			//nnumbers.Add(10);
-			//points.Add(new PointF(((float)View.Bounds.Width / 2) - 40, 100));
-			//nnumbers.Add(100);
-
-
-			////for (int i = 0; i < 10; i++)
-			////{
-			////	points.Add(new CGPoint(i * 10, i * 10));
-			////	nnumbers.Add(new NSNumber(i));
-			////}
-
-			//var image = LFHeatMap.LFHeatMap.HeatMapWithRect(View.Bounds, 0.6F, points.ToArray(), nnumbers.ToArray(), true, true);
-			//Add(new UIImageView(image));
 			base.ViewDidLoad();
-			// Perform any additional setup after loading the view, typically from a nib.
 		}
 
 		static void LoadQuakeData(out CLLocation[] locations, out double[] weights)
@@ -92,19 +66,17 @@ namespace heatmap
 
 			_slider.ValueChanged += SliderValueChanged;
 			SliderValueChanged(_slider, null);
-
 		}
 
 		void SliderValueChanged(object sender, EventArgs e)
 		{
 			float boost = _slider.Value;
-			_imageView.Image = LFHeatMap.LFHeatMap.HeatMapForMapView(_mapView, boost, _locations, _weights);
+			_imageView.Image = LFHeatMap.iOS.HeatMap.HeatMapForMapView(_mapView, boost, _locations, _weights);
 		}
 
 		public override void DidReceiveMemoryWarning()
 		{
 			base.DidReceiveMemoryWarning();
-			// Release any cached data, images, etc that aren't in use.
 		}
 	}
 }

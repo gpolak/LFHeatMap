@@ -1,39 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using CoreGraphics;
-using CoreLocation;
-using Foundation;
-using MapKit;
-using UIKit;
-
-namespace LFHeatMap
+﻿namespace LFHeatMap
 {
-	public static class LFHeatMap
+	public static class HeatMap
 	{
-
-		public static UIImage HeatMapForMapView(MKMapView mapView, double boost, CLLocation[] locations, double[] weights)
-		{
-			if (mapView == null || locations == null)
-				return null;
-
-			var points = new List<PointF>();
-
-			for (int i = 0; i < locations.Length; i++)
-			{
-				CGPoint point = mapView.ConvertCoordinate(locations[i].Coordinate, mapView);
-				points.Add(new PointF((float)point.X, (float)point.Y));
-			}
-
-			return HeatMapWithRect(mapView.Frame, boost, points.ToArray(), weights);
-		}
-
-		public static UIImage HeatMapWithRect(CGRect rect, double boost, PointF[] points, double[] weights)
-		{
-			return HeatMapWithRect(rect, boost, points, weights, false, true);
-		}
-
-		public static UIImage HeatMapWithRect(CGRect rect, double boost, PointF[] points, double[] weights, bool weightsAdjustmentEnabled, bool groupingEnabled)
+		public static byte[] HeatMapForRectangle(Rect rect, double boost, PointWithWeight[] points, bool weightsAdjustmentEnabled, bool groupingEnabled)
 		{
 			// Adjustment variables for weights adjustment
 			float weightSensitivity = 1; // Percents from maximum weight
@@ -43,14 +12,14 @@ namespace LFHeatMap
 			int groupingThreshold = 10;  // Increasing this will improve performance with less accuracy. Negative will disable grouping
 			int peaksRemovalThreshold = 20; // Should be greater than groupingThreshold
 			float peaksRemovalFactor = 0.4F; // Should be from 0 (no peaks removal) to 1 (peaks are completely lowered to zero)
-			if (points == null || rect.Size.Width <= 0 || rect.Size.Width <= 0 || (weights != null && points.Length != weights.Length))
+			if (points == null || rect.Width <= 0 || rect.Width <= 0)
 			{
 				//NSLog(@"LFHeatMap: heatMapWithRect: incorrect arguments");
 				return null;
 			}
 
-			int width = (int)rect.Size.Width;
-			int height = (int)rect.Size.Height;
+			int width = (int)rect.Width;
+			int height = (int)rect.Height;
 			int i, j;
 
 			// According to heatmap API, boost is heat radius multiplier
@@ -66,13 +35,10 @@ namespace LFHeatMap
 			int[] point_x = new int[points_num];
 			int[] point_y = new int[points_num];
 			double[] point_weight_percent = new double[points_num];
-			double[] point_weight = null;
+			double[] point_weight = new double[points_num];
 			double max_weight = 0;
-			if (weights != null)
-			{
-				point_weight = new double[points_num];
-				max_weight = 0.0F;
-			}
+			point_weight = new double[points_num];
+
 
 			i = 0;
 			j = 0;
@@ -85,8 +51,8 @@ namespace LFHeatMap
 				// Filter out of range points
 				if (point_x[i] < 0 - radius ||
 					point_y[i] < 0 - radius ||
-					point_x[i] >= rect.Size.Width + radius ||
-					point_y[i] >= rect.Size.Height + radius)
+					point_x[i] >= rect.Width + radius ||
+					point_y[i] >= rect.Height + radius)
 				{
 					points_num--;
 					j++;
@@ -96,49 +62,32 @@ namespace LFHeatMap
 				}
 
 				// Fill weights if available
-				if (weights != null)
-				{
-					point_weight[i] = weights[j];
-					if (max_weight < point_weight[i])
-						max_weight = point_weight[i];
-				}
+				point_weight[i] = points[j].Weight;
+				if (max_weight < point_weight[i])
+					max_weight = point_weight[i];
 
 				i++;
 				j++;
 			}
 
-
-
 			// Step 1.5
 			// Normalize weights to be 0 .. 100 (like percents)
 			// Weights array should be integer for not slowing down calculation by
 			// int-float conversion and float multiplication
-			if (weights != null)
+			double absWeightSensitivity = (max_weight / 100.0) * weightSensitivity;
+			double absWeightBoostTo = (max_weight / 100.0) * weightBoostTo;
+			for (i = 0; i < points_num; i++)
 			{
-				double absWeightSensitivity = (max_weight / 100.0) * weightSensitivity;
-				double absWeightBoostTo = (max_weight / 100.0) * weightBoostTo;
-				for (i = 0; i < points_num; i++)
+				if (weightsAdjustmentEnabled)
 				{
-					if (weightsAdjustmentEnabled)
-					{
-						if (point_weight[i] <= absWeightSensitivity)
-							point_weight[i] *= absWeightBoostTo / absWeightSensitivity;
-						else
-							point_weight[i] = absWeightBoostTo + (point_weight[i] - absWeightSensitivity) * ((max_weight - absWeightBoostTo) / (max_weight - absWeightSensitivity));
-					}
-					point_weight_percent[i] = 100.0 * (point_weight[i] / max_weight);
+					if (point_weight[i] <= absWeightSensitivity)
+						point_weight[i] *= absWeightBoostTo / absWeightSensitivity;
+					else
+						point_weight[i] = absWeightBoostTo + (point_weight[i] - absWeightSensitivity) * ((max_weight - absWeightBoostTo) / (max_weight - absWeightSensitivity));
 				}
-				point_weight = null;
+				point_weight_percent[i] = 100.0 * (point_weight[i] / max_weight);
 			}
-			else
-			{
-				// Fill with 1 in case if no weights provided
-				for (i = 0; i < points_num; i++)
-				{
-					point_weight_percent[i] = 1;
-				}
-			}
-
+			point_weight = null;
 
 			// Step 1.75 (optional)
 			// Grouping and filtering bunches of points in same location
@@ -176,7 +125,7 @@ namespace LFHeatMap
 						{
 							currentDistance = (x - point_x[i]) * (x - point_x[i]) + (y - point_y[i]) * (y - point_y[i]);
 
-							currentDensity = radius - LFHeatMapHelpers.ISqrt(currentDistance);
+							currentDensity = radius - Helpers.ISqrt(currentDistance);
 							if (currentDensity < 0)
 								currentDensity = 0;
 
@@ -233,16 +182,7 @@ namespace LFHeatMap
 			}
 
 			density = null; ;
-
-			// Step 4
-			// Create image from rendered raw data
-
-			CGImage cgImage = null;
-			using (var colorSpace = CGColorSpace.CreateDeviceRGB())
-			using (var context = new CGBitmapContext(rgba, width, height, 8, 4 * width, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrderDefault))
-				cgImage = context.ToImage();
-
-			return new UIImage(cgImage);
+			return rgba;
 		}
 
 		static void GroupPoints(int groupingThreshold, int peaksRemovalThreshold, float peaksRemovalFactor, int points_num, int[] point_x, int[] point_y, double[] point_weight_percent)
@@ -256,7 +196,7 @@ namespace LFHeatMap
 					{
 						if (point_weight_percent[j] > 0)
 						{
-							currentDistance = LFHeatMapHelpers.ISqrt((point_x[i] - point_x[j]) * (point_x[i] - point_x[j]) + (point_y[i] - point_y[j]) * (point_y[i] - point_y[j]));
+							currentDistance = Helpers.ISqrt((point_x[i] - point_x[j]) * (point_x[i] - point_x[j]) + (point_y[i] - point_y[j]) * (point_y[i] - point_y[j]));
 
 							if (currentDistance > peaksRemovalThreshold)
 								currentDistance = peaksRemovalThreshold;
@@ -282,7 +222,6 @@ namespace LFHeatMap
 
 								// Repeat again for new point
 								i--;
-								break;
 							}
 						}
 					}
@@ -291,4 +230,3 @@ namespace LFHeatMap
 		}
 	}
 }
-

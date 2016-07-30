@@ -122,6 +122,10 @@
   <ItemGroup>
     <ProjectReference Include="..\LFHeatMapXamarin\LFHeatMap.csproj">
       <Project>{31A5123A-AB12-4C66-8BA6-436F4DA04F7C}</Project>
+      <Name>LFHeatMap.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="LFHeatMap.Core\LFHeatMap.Core.csproj">
+      <Project>{80B7C79E-0608-41F3-9111-183EE47E2972}</Project>
       <Name>LFHeatMap</Name>
     </ProjectReference>
   </ItemGroup>
