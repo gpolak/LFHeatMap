@@ -6,7 +6,7 @@
 
 ## Features
 * extremely fast heat map generation from point/weight data pairs
-* generates byte[]  of RGBA iamges that can be used as needed
+* generates byte[]  of RGBA images that can be used as needed
 * variable boost/bleed
 * portable class library
 
@@ -55,4 +55,4 @@ LFHeatMap is available under the MIT license. See the LICENSE file for more info
 
 ## LF?
 
-LFHeatMap comes from the work of [George Polak](https://github.com/gpolak) here, and was ported to Xamarin and C# by [Rui Marinho](https://github.com/rmarinho).
+LFHeatMap comes from the work of [George Polak](https://github.com/gpolak) here, and was ported to .NET and Xamarin by [Rui Marinho](https://github.com/rmarinho).
