@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFHeatMapDemo", "LFHeatMapDemo.csproj", "{1DC5E5CA-324D-4F45-BD2E-100CD2C3C1D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFHeatMap", "..\LFHeatMapXamarin\LFHeatMap\LFHeatMap.csproj", "{80B7C79E-0608-41F3-9111-183EE47E2972}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFHeatMap", "..\LFHeatMap\LFHeatMap\LFHeatMap.csproj", "{80B7C79E-0608-41F3-9111-183EE47E2972}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFHeatMap.iOS", "..\LFHeatMapXamarin\LFHeatMap.iOS\LFHeatMap.iOS.csproj", "{31A5123A-AB12-4C66-8BA6-436F4DA04F7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFHeatMap.iOS", "..\LFHeatMap\LFHeatMap.iOS\LFHeatMap.iOS.csproj", "{31A5123A-AB12-4C66-8BA6-436F4DA04F7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
