@@ -120,7 +120,7 @@
     <BundleResource Include="quake.plist" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LFHeatMapXamarin\LFHeatMap.iOS\LFHeatMap.iOS.csproj">
+    <ProjectReference Include="..\LFHeatMap\LFHeatMap.iOS\LFHeatMap.iOS.csproj">
       <Project>{31A5123A-AB12-4C66-8BA6-436F4DA04F7C}</Project>
       <Name>LFHeatMap.iOS</Name>
     </ProjectReference>

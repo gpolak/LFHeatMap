@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LFHeatMap</id>
+    <version>1.0.0</version>
+    <authors>rmarinho</authors>
+    <owners>rmarinho</owners>
+    <description>NET port of LFHeatMap for iOS</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>rmarinho 2016</copyright>
+    <tags>HeatMap heat map ios xamarin</tags>
+ 
+    <references>
+       <group targetFramework="portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10">
+        <reference file="LFHeatMap.Core.dll" />
+      </group>
+    <group targetFramework="Xamarin.iOS10">
+     <reference file="LFHeatMap.Core.dll" />
+      <reference file="LFHeatMap.iOS.dll" />
+    </group>
+    </references>
+  </metadata>
+  <files>
+     <file src="/LFHeatMap.iOS/bin/Release/LFHeatMap.Core.dll" target="lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10" />
+      <file src="/LFHeatMap.iOS/bin/Release/LFHeatMap.Core.dll" target="lib\Xamarin.iOS10" />
+      <file src="/LFHeatMap.iOS/bin/Release/LFHeatMap.iOS.dll" target="lib\Xamarin.iOS10" />
+  </files>
+</package>
