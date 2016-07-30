@@ -62,7 +62,7 @@
 				}
 
 				// Fill weights if available
-				point_weight[i] = points[j].Weight;
+				point_weight[i] = pointValue.Weight;
 				if (max_weight < point_weight[i])
 					max_weight = point_weight[i];
 
@@ -196,6 +196,8 @@
 					{
 						if (point_weight_percent[j] > 0)
 						{
+							if (i == -1)
+								continue;
 							currentDistance = Helpers.ISqrt((point_x[i] - point_x[j]) * (point_x[i] - point_x[j]) + (point_y[i] - point_y[j]) * (point_y[i] - point_y[j]));
 
 							if (currentDistance > peaksRemovalThreshold)
