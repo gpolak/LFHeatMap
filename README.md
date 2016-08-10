@@ -4,6 +4,10 @@ iOS heat map package
 
 ![LFHeatMap](lfheatmap_screenshot.png)
 
+## Modifications in this Fork
+* Complete local heatmap calculations. It allows you to integrate the Heatmap into a Tiled Map System to create detailed heatmaps over any map size.
+* Some optimiziations for performance.
+
 ## Features
 * extremely fast heat map generation from point/weight data pairs
 * generates UIImage objects that can be overlaid as needed
@@ -26,6 +30,9 @@ pod "LFHeatMap"
 ### Source Files
 
 Alternatively you can directly add the `LFHeatMap` folder to your project.
+
+### .NET/Xamarin Port
+https://github.com/rmarinho/LFHeatMap
 
 ## Demo
 This demo plots the measured magnitudes of the [2011 Virginia Earthquake](http://en.wikipedia.org/wiki/2011_Virginia_earthquake).

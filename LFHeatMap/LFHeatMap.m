@@ -352,7 +352,6 @@ inline static int isqrt(int x)
             to_x = point_x[i] + radius;
             to_y = point_y[i] + radius;
             
-            
             int real_from_x = from_x;
             int real_from_y = from_y;
             int real_to_x = to_x;
@@ -426,88 +425,20 @@ inline static int isqrt(int x)
                 // Normalize density to 0..1
                 floatDensity = (float)density[i] / (float)maxDensity;
                 
-                if (floatDensity >= 0.90)
-                {
-                    // Red component
-                    rgba[indexOrigin] = 0;// * floatDensity;
-                    
-                    // Green component
-                    rgba[indexOrigin+1] = 140;// * floatDensity;
-                    
-                    // Blue component
-                    rgba[indexOrigin+2] = 0;// * floatDensity;
-                    
-                }
-                else if (floatDensity >= 0.75)
-                {
-                    // Red component
-                    rgba[indexOrigin] = 110;// * floatDensity;
-                    
-                    // Green component
-                    rgba[indexOrigin+1] = 128;// * floatDensity;
-                    
-                    // Blue component
-                    rgba[indexOrigin+2] = 0;// * floatDensity;
-                }
-                else if (floatDensity >= 0.60)
-                {
-                    // Red component
-                    rgba[indexOrigin] = 176;// * floatDensity;
-                    
-                    // Green component
-                    rgba[indexOrigin+1] = 198;// * floatDensity;
-                    
-                    // Blue component
-                    rgba[indexOrigin+2] = 0;// * floatDensity;
-                }
-                else if (floatDensity >= 0.45)
-                {
-                    // Red component
-                    rgba[indexOrigin] = 223;// * floatDensity;
-                    
-                    // Green component
-                    rgba[indexOrigin+1] = 180;// * floatDensity;
-                    
-                    // Blue component
-                    rgba[indexOrigin+2] = 0;// * floatDensity;
-                }
-                else if (floatDensity >= 0.30)
-                {
-                    
-                    // Red component
-                    rgba[indexOrigin] = 245;// * floatDensity;
-                    
-                    // Green component
-                    rgba[indexOrigin+1] = 111;// * floatDensity;
-                    
-                    // Blue component
-                    rgba[indexOrigin+2] = 0;// * floatDensity;
-                }
-                else if (floatDensity >= 0.15)
-                {
-                    
-                    // Red component
-                    rgba[indexOrigin] = 195;// * floatDensity;
-                    
-                    // Green component
-                    rgba[indexOrigin+1] = 63;// * floatDensity;
-                    
-                    // Blue component
-                    rgba[indexOrigin+2] = 0;// * floatDensity;
-                }
-                else
-                {
-                    // Red component
-                    rgba[indexOrigin] = 244;// * floatDensity;
-                    
-                    // Green component
-                    rgba[indexOrigin+1] = 0;// * floatDensity;;
-                    
-                    // Blue component
-                    rgba[indexOrigin+2] = 0;// * floatDensity;
-                }
+                // Red and alpha component
+                rgba[indexOrigin] = floatDensity * 255;
+                rgba[indexOrigin+3] = rgba[indexOrigin];
                 
-                rgba[indexOrigin+3] = 140;
+                 // Green component
+                if (floatDensity >= 0.75)
+                    rgba[indexOrigin+1] = rgba[indexOrigin];
+                else if (floatDensity >= 0.5)
+                    rgba[indexOrigin+1] = (floatDensity - 0.5) * 255 * 3;
+               
+                
+                // Blue component
+                if (floatDensity >= 0.8)
+                    rgba[indexOrigin+2] = (floatDensity - 0.8) * 255 * 5;
             }
         }
     }
