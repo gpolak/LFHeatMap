@@ -12,6 +12,8 @@ iOS heat map package
 ## Anti-Features
 LFHeatMap is a simple `UIImage` generator. The resulting object can be used like any other `UIImage`, standalone or in a `UIImageView`. While it can be overlaid on top of a `MKMapView`, it is not strongly tied to this specific component and hence does not offer the benefits that come with a more complex implementation of `MKOverlayRenderer`.
 
+Check out [DTMHeatMap](https://github.com/dataminr/DTMHeatmap) for an implementation supporting `MKOverlay`.
+
 ## Adding LFHeatMap to Your Project
 
 ### CocoaPods
