@@ -36,7 +36,7 @@ https://github.com/rmarinho/LFHeatMap
 This demo plots the measured magnitudes of the [2011 Virginia Earthquake](http://en.wikipedia.org/wiki/2011_Virginia_earthquake).
 
 ### Running
-1. Open and launch the LFHeatMapDemo XCode project. 
+1. Open and launch the LFHeatMapDemo Xcode project. 
 2. Move the slider on the bottom to adjust the boost.
 
 ### Explanation
