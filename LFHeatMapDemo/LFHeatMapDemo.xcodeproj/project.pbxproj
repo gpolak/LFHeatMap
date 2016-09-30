@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C63FAFDFF03073CA803D13F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D57846224BDD2763E166E40 /* libPods.a */; };
 		4EBFBA231979813800EB178F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EBFBA221979813800EB178F /* Foundation.framework */; };
 		4EBFBA251979813800EB178F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EBFBA241979813800EB178F /* CoreGraphics.framework */; };
 		4EBFBA271979813800EB178F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EBFBA261979813800EB178F /* UIKit.framework */; };
@@ -41,6 +42,9 @@
 		4EBFBA5819799DD900EB178F /* LFHeadMapDemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LFHeadMapDemoViewController.xib; sourceTree = "<group>"; };
 		4EBFBA5D19799E3C00EB178F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		4EBFBA5F1979A2DC00EB178F /* quake.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = quake.plist; sourceTree = "<group>"; };
+		8D57846224BDD2763E166E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2DA8FBADFA65A42FC081B0D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		BEDECF005B9A7F70D61D68BB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,12 +56,22 @@
 				4EBFBA251979813800EB178F /* CoreGraphics.framework in Frameworks */,
 				4EBFBA271979813800EB178F /* UIKit.framework in Frameworks */,
 				4EBFBA231979813800EB178F /* Foundation.framework in Frameworks */,
+				1C63FAFDFF03073CA803D13F /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		35BFF08A7E327FF19B84622B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A2DA8FBADFA65A42FC081B0D /* Pods.debug.xcconfig */,
+				BEDECF005B9A7F70D61D68BB /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		4EBFBA161979813800EB178F = {
 			isa = PBXGroup;
 			children = (
@@ -65,6 +79,7 @@
 				4EBFBA281979813800EB178F /* LFHeatMapDemo */,
 				4EBFBA211979813800EB178F /* Frameworks */,
 				4EBFBA201979813800EB178F /* Products */,
+				35BFF08A7E327FF19B84622B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -84,6 +99,7 @@
 				4EBFBA241979813800EB178F /* CoreGraphics.framework */,
 				4EBFBA261979813800EB178F /* UIKit.framework */,
 				4EBFBA3B1979813800EB178F /* XCTest.framework */,
+				8D57846224BDD2763E166E40 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -95,10 +111,10 @@
 				4EBFBA311979813800EB178F /* AppDelegate.h */,
 				4EBFBA321979813800EB178F /* AppDelegate.m */,
 				4EBFBA341979813800EB178F /* Images.xcassets */,
-				4EBFBA291979813800EB178F /* Supporting Files */,
 				4EBFBA5619799DD900EB178F /* LFHeadMapDemoViewController.h */,
 				4EBFBA5719799DD900EB178F /* LFHeadMapDemoViewController.m */,
 				4EBFBA5819799DD900EB178F /* LFHeadMapDemoViewController.xib */,
+				4EBFBA291979813800EB178F /* Supporting Files */,
 			);
 			path = LFHeatMapDemo;
 			sourceTree = "<group>";
@@ -131,9 +147,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4EBFBA4B1979813800EB178F /* Build configuration list for PBXNativeTarget "LFHeatMapDemo" */;
 			buildPhases = (
+				E5312E7ECC8068B3AF5C1490 /* Check Pods Manifest.lock */,
 				4EBFBA1B1979813800EB178F /* Sources */,
 				4EBFBA1C1979813800EB178F /* Frameworks */,
 				4EBFBA1D1979813800EB178F /* Resources */,
+				49A68B67C77F159CE6B672CC /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -183,6 +201,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		49A68B67C77F159CE6B672CC /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E5312E7ECC8068B3AF5C1490 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4EBFBA1B1979813800EB178F /* Sources */ = {
@@ -282,26 +333,35 @@
 		};
 		4EBFBA4C1979813800EB178F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A2DA8FBADFA65A42FC081B0D /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LFHeatMapDemo/LFHeatMapDemo-Prefix.pch";
 				INFOPLIST_FILE = "LFHeatMapDemo/LFHeatMapDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "312a1c6e-25fb-4d65-8453-543f9d0a3c7b";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		4EBFBA4D1979813800EB178F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEDECF005B9A7F70D61D68BB /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nicolas  Amarelle (8NRF3XCN63)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LFHeatMapDemo/LFHeatMapDemo-Prefix.pch";
 				INFOPLIST_FILE = "LFHeatMapDemo/LFHeatMapDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "312a1c6e-25fb-4d65-8453-543f9d0a3c7b";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

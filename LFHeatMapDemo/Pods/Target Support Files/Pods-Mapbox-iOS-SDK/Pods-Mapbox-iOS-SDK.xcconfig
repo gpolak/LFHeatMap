@@ -1,0 +1,2 @@
+PODS_MAPBOX_IOS_SDK_LIBRARY_SEARCH_PATHS = "${PODS_ROOT}/Mapbox-iOS-SDK/Proj4" "$(PODS_ROOT)/Mapbox-iOS-SDK/Proj4"
+PODS_MAPBOX_IOS_SDK_OTHER_LDFLAGS = -ObjC -l"Proj4" -l"sqlite3" -l"z" -framework "CoreGraphics" -framework "CoreLocation" -framework "Foundation" -framework "QuartzCore" -framework "UIKit"

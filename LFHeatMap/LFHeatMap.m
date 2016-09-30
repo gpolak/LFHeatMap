@@ -6,7 +6,90 @@
  */
 
 #import "LFHeatMap.h"
+@import CoreLocation.CLLocation;
 
+/**
+ *  Calculates the smallest CGRect containing the provided points
+ *  @param points An Array of NSValue containing CGPoint structs
+ *  @discussion If no points are provided, this method return CGRectNull
+ */
+inline CGRect CGRectContainingPoints(NSArray *points) {
+    
+    if (points.count == 0) return CGRectNull;
+    
+    CGPoint (^pointAtIndex)(NSUInteger index) = ^CGPoint(NSUInteger index) {
+        
+        NSValue *value = points[index];
+        
+        return [value CGPointValue];
+    };
+
+    CGFloat greatestXValue = pointAtIndex(0).x;
+    CGFloat greatestYValue = pointAtIndex(0).y;
+    CGFloat smallestXValue = pointAtIndex(0).x;
+    CGFloat smallestYValue = pointAtIndex(0).y;
+    
+    for(int i = 1; i < points.count; i++)
+    {
+        CGPoint point = pointAtIndex(i);
+        greatestXValue = MAX(greatestXValue, point.x);
+        greatestYValue = MAX(greatestYValue, point.y);
+        smallestXValue = MIN(smallestXValue, point.x);
+        smallestYValue = MIN(smallestYValue, point.y);
+    }
+    
+    CGRect rect;
+    rect.origin = CGPointMake(smallestXValue, smallestYValue);
+    rect.size.width = greatestXValue - smallestXValue;
+    rect.size.height = greatestYValue - smallestYValue;
+    
+    return rect;
+}
+
+inline CGPoint CGPointOffset(CGPoint point, CGFloat xOffset, CGFloat yOffset) {
+    
+    return CGPointMake(point.x + xOffset, point.y + yOffset);
+    
+}
+
+@implementation RMHeatmapAnnotation
+
+- (instancetype)initWithMapView:(RMMapView *)aMapView
+                     coordinate:(CLLocationCoordinate2D)aCoordinate
+                          title:(NSString *)aTitle
+                   heatmapImage:(UIImage *)heatmapImage
+{
+    NSParameterAssert(heatmapImage);
+    
+    self = [super initWithMapView:aMapView coordinate:aCoordinate andTitle:aTitle];
+    
+    if (!self) return nil;
+    
+    self.heatmapImage = heatmapImage;
+    
+    return self;
+}
+
+- (instancetype)initWithMapView:(RMMapView *)aMapView coordinate:(CLLocationCoordinate2D)aCoordinate andTitle:(NSString *)aTitle
+{
+    @throw [NSException exceptionWithName:@"Invalid initializer" reason:@"Called invalid initializer on class RMHeatmapAnnotation" userInfo:nil];
+}
+
+@end
+
+@implementation RMHeatmapMarker
+
+- (instancetype)initWithHeatmapAnnotation:(RMHeatmapAnnotation *)heatmapAnnotation
+{
+    NSParameterAssert(heatmapAnnotation);
+    self = [super initWithUIImage:heatmapAnnotation.heatmapImage];
+    
+    if (!self) return nil;
+    
+    return self;
+}
+
+@end
 
 @implementation LFHeatMap
 
@@ -141,10 +224,10 @@ inline static int isqrt(int x)
     }
 }
 
-+ (UIImage *)heatMapForMapView:(MKMapView *)mapView
-                         boost:(float)boost
-                     locations:(NSArray *)locations
-                       weights:(NSArray *)weights
++ (RMHeatmapAnnotation *)heatMapAnnotationForMapView:(RMMapView *)mapView
+                                               boost:(float)boost
+                                           locations:(NSArray *)locations
+                                             weights:(NSArray *)weights
 {
     if (!mapView || !locations)
         return nil;
@@ -153,11 +236,43 @@ inline static int isqrt(int x)
     for (NSInteger i = 0; i < [locations count]; i++)
     {
         CLLocation *location = [locations objectAtIndex:i];        
-        CGPoint point = [mapView convertCoordinate:location.coordinate toPointToView:mapView];        
+        CGPoint point = [mapView coordinateToPixel:location.coordinate];
         [points addObject:[NSValue valueWithCGPoint:point]];
     }
     
-    return [LFHeatMap heatMapWithRect:mapView.frame boost:boost points:points weights:weights];
+    CGRect containerRect = CGRectContainingPoints(points);
+    CGPoint centerPoint = CGPointMake(CGRectGetMidX(containerRect), CGRectGetMidY(containerRect));
+    CLLocationCoordinate2D heatmapCenterLocation = [mapView pixelToCoordinate:centerPoint];
+    
+    CGFloat xOffset = -containerRect.origin.x;
+    CGFloat yOffset = -containerRect.origin.y;
+    
+    NSMutableArray *translatedPoints = [[NSMutableArray alloc] initWithCapacity:points.count];
+    CGRect translatedContainerRect = CGRectOffset(containerRect, xOffset, yOffset);
+    
+    CGFloat imagePadding = 40.0f;
+    
+    CGRect translatedContainerRectWithPadding = CGRectInset(translatedContainerRect, -imagePadding, -imagePadding);
+    
+    for (NSValue *value in points)
+    {
+        CGPoint translatedPoint = CGPointOffset([value CGPointValue], xOffset, yOffset);
+        [translatedPoints addObject:[NSValue valueWithCGPoint:translatedPoint]];
+    }
+    
+    if (translatedContainerRectWithPadding.size.width > 2048 || translatedContainerRectWithPadding.size.height > 2048)
+    {
+        NSLog(@"LFHeatMap: resulting heatmap is too big, reduce zoom");
+        return nil;
+    }
+    
+    UIImage *image = [LFHeatMap heatMapWithRect:translatedContainerRectWithPadding boost:boost points:translatedPoints weights:weights];
+    RMHeatmapAnnotation *heatmapAnnotation = [[RMHeatmapAnnotation alloc] initWithMapView:mapView
+                                                                               coordinate:heatmapCenterLocation
+                                                                                    title:@"Heatmap"
+                                                                             heatmapImage:image];
+    
+    return heatmapAnnotation;
 }
 
 + (UIImage *)heatMapWithRect:(CGRect)rect

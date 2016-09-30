@@ -1,8 +1,44 @@
-# LFHeatMap
+# LFHeatMap for Mapbox
 
 iOS heat map package
 
 ![LFHeatMap](lfheatmap_screenshot.png)
+
+##Usage
+
+**1. Add annotation to the map**
+
+```objective-c
+self.heatmapAnnotation = [LFHeatMap heatMapAnnotationForMapView:self.mapView
+                                                          boost:self.slider.value
+                                                      locations:self.locations
+                                                        weights:self.weights];
+                                                        
+if (self.heatmapAnnotation) 
+    [self.mapView addAnnotation:self.heatmapAnnotation];
+else
+    NSLog(@"Resulting heatmap is too big");
+```
+
+**2. Return layer through the map delegate**
+
+```objective-c
+- (RMMapLayer *)mapView:(RMMapView *)mapView layerForAnnotation:(RMAnnotation *)annotation
+{
+    if (annotation.isUserLocationAnnotation) return nil;
+    
+    if (annotation.class == [RMHeatmapAnnotation class])
+    {
+        RMHeatmapMarker *heatmapMarker = [[RMHeatmapMarker alloc] initWithHeatmapAnnotation:(RMHeatmapAnnotation*)annotation];
+        
+        return heatmapMarker;
+    }
+    
+    NSAssert(NO, @"Could not provide layer for annotation: %@", annotation);
+    
+    return nil;
+}
+```
 
 ## Features
 * extremely fast heat map generation from point/weight data pairs
@@ -10,24 +46,15 @@ iOS heat map package
 * variable boost/bleed
 
 ## Anti-Features
-LFHeatMap is a simple `UIImage` generator. The resulting object can be used like any other `UIImage`, standalone or in a `UIImageView`. While it can be overlaid on top of a `MKMapView`, it is not strongly tied to this specific component and hence does not offer the benefits that come with a more complex implementation of `MKOverlayRenderer`.
+Size of the heatmap is limited to avoid memory overflow.
 
 Check out [DTMHeatMap](https://github.com/dataminr/DTMHeatmap) for an implementation supporting `MKOverlay`.
 
 ## Adding LFHeatMap to Your Project
 
-### CocoaPods
-
-[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like LFHeatMap in your projects. See the ["Getting Started"](https://github.com/gpolak/LFHeatMap/wiki/Installing-LFHeatMap-via-CocoaPods) guide for more information.
-
-```ruby
-platform :ios, '5.0'
-pod "LFHeatMap"
-```
-
 ### Source Files
 
-Alternatively you can directly add the `LFHeatMap` folder to your project.
+Copy the `LFHeatMap` folder to your project.
 
 ### .NET/Xamarin Port
 https://github.com/rmarinho/LFHeatMap
@@ -43,79 +70,7 @@ This demo plots the measured magnitudes of the [2011 Virginia Earthquake](http:/
 
 The data is stored in `quake.plist` which is a simple plist storing the latitude, longitude, and magnitude of each measurement. The points (locations) and weights (magnitudes) are stored in two `NSArray` objects in `viewDidLoad` of `LFHeatMapDemoViewController`.
 
-The main action takes place in the `sliderChanged:` function. Moving the slider determines the new boost value and generates a new heat map image. The image's dimensions are the same as the `self.mapView` object, with the points and weights supplied by the two data arrays. The image is then passed to the overlaying `UIImageView` that sits on top of the map.
-
-
-## LFHeatMap
-
-This class contains the three basic static functions used to generate the heat maps.
-
-### 1. Basic Heat Map
-
-Supply the desired image dimensions and boost, as well as the point/value arrays. There should be a 1:1 mapping between these two arrays, that is each index in the *points* array should have a corresponding index in the *weights* array.
-
-```objective-c
-@params
-rect: region frame
-boost: heat boost value
-points: array of NSValue CGPoint objects representing the data points
-weights: array of NSNumber integer objects representing the weight of each point
- 
-@returns
-UIImage object representing the heatmap for the specified region.
- 
-+ (UIImage *)heatMapWithRect:(CGRect)rect 
-                       boost:(float)boost 
-                      points:(NSArray *)points 
-                     weights:(NSArray *)weights
-```
-
-### 2. Advanced Heat Map
-
-Works generally the same as the basic heat map, but allows to tweak two additional parameters to control the "bleed" of heat rendering.
-
-```objective-c
-@params
-rect: region frame
-boost: heat boost value
-points: array of NSValue CGPoint objects representing the data points
-weights: array of NSNumber integer objects representing the weight of each point
-weightsAdjustmentEnabled: set YES for weight balancing and normalization
-groupingEnabled: set YES for tighter visual grouping of dense areas
- 
-@returns
-UIImage object representing the heat map for the specified region.
- 
-+ (UIImage *)heatMapWithRect:(CGRect)rect 
-                       boost:(float)boost 
-                      points:(NSArray *)points 
-                     weights:(NSArray *)weights 
-    weightsAdjustmentEnabled:(BOOL)weightsAdjustmentEnabled
-             groupingEnabled:(BOOL)groupingEnabled
-```
-
-### 3. MKMapView Helper
-
-Works the same as the basic heat map, but allows you to supply map-specific parameters. Pass an `MKMapView` object (typically the target you want to overlay), and an array of `CLLocation` objects corresponding to coordinates on the specified `MKMapView` object.
-
-The function will convert these to the required CGRect/CGPoint values as needed.
-
-```objective-c
-@params 
-mapView: Map view representing the heat map area.
-boost: heat boost value
-locations: array of CLLocation objects representing the data points
-weights: array of NSNumber integer objects representing the weight of each point
- 
-@returns
-UIImage object representing the heatmap for the map region.
-
-+ (UIImage *)heatMapForMapView:(MKMapView *)mapView
-                         boost:(float)boost
-                     locations:(NSArray *)locations
-                       weights:(NSArray *)weights
-
-```
+With the above data, `LFHeatMap` generates an `RMAnnotation` instance that you can add to your Mapbox map directly.
 
 ## License
 
