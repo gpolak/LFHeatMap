@@ -342,7 +342,7 @@ inline static int isqrt(int x)
     
     // Step 2
     // Fill density info. Density is calculated around each point
-    int from_x, from_y, to_x, to_y;
+    int from_x, from_y, to_x, to_y, maxDensity;
     for (i = 0; i < points_num; i++)
     {
         if (point_weight_percent[i]> 0)
@@ -352,29 +352,45 @@ inline static int isqrt(int x)
             to_x = point_x[i] + radius;
             to_y = point_y[i] + radius;
             
-            if (from_x < 0)
+            int real_from_x = from_x;
+            int real_from_y = from_y;
+            int real_to_x = to_x;
+            int real_to_y = to_y;
+            
+            
+            if (from_x < 0) {
                 from_x = 0;
-            if (from_y < 0)
+            }
+            if (from_y < 0) {
                 from_y = 0;
-            if (to_x > width)
+            }
+            if (to_x > width) {
                 to_x = width;
-            if (to_y > height)
+            }
+            if (to_y > height) {
                 to_y = height;
+            }
             
             
-            for (int y = from_y; y < to_y; y++)
+            for (int y = real_from_y; y < real_to_y; y++)
             {
-                for (int x = from_x; x < to_x; x++)
+                for (int x = real_from_x; x < real_to_x; x++)
                 {
-                    currentDistance = (x - point_x[i])*(x - point_x[i]) + (y - point_y[i])*(y - point_y[i]);
-                    
+                    currentDistance = pow((x - point_x[i]), 2) + pow(y - point_y[i], 2);
                     currentDensity = radius - isqrt(currentDistance);
                     if (currentDensity < 0)
                         currentDensity = 0;
                     
-                    density[y*width + x] += currentDensity * point_weight_percent[i];
+                    if (x >= 0 && x < to_x && y >= 0 && y < to_y) {
+                        density[y*width+x] += currentDensity * point_weight_percent[i];
+                    }
                 }
             }
+            
+            int max_distance_x = (point_x[i] + radius) - (point_x[i] - radius);
+            int max_distance_y = (point_y[i] + radius) - (point_y[i] - radius);
+            int distance = pow(max_distance_x, 2) + pow(max_distance_y, 2);
+            maxDensity = (radius - isqrt(max_distance_x)) * point_weight_percent[i];
         }
     }
     
@@ -386,12 +402,13 @@ inline static int isqrt(int x)
     
     // Step 2.5
     // Find max density (doing this in step 2 will have less performance)
-    int maxDensity = density[0];
+    /*int maxDensity = density[0];
     for (i = 1; i < width * height; i++)
     {
         if (maxDensity < density[i])
             maxDensity = density[i];
-    }
+    }*/
+    // stephan: Was Replaced with non-Iterative calculations in Step 2
     
     // Step 3
     // Render density info into raw RGBA pixels

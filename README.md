@@ -4,6 +4,10 @@ iOS heat map package
 
 ![LFHeatMap](lfheatmap_screenshot.png)
 
+## Modifications in this Fork
+* Complete local heatmap calculations. It allows you to integrate the Heatmap into a Tiled Map System to create detailed heatmaps over any map size.
+* Some optimiziations for performance.
+
 ## Features
 * extremely fast heat map generation from point/weight data pairs
 * generates UIImage objects that can be overlaid as needed
